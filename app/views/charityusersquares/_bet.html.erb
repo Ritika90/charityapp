@@ -1,0 +1,104 @@
+            <div class='bet'>
+              <%= form_for(@bet, :url =>  bets_create_path, :html => { :multipart => true ,:novalidate=>"novalidate"} )  do |f| %>
+                <div class="images_url row">
+                </div> 
+
+                <div id="errorExplanation">
+                  <%= flash["error"] %>
+                </div>
+
+                <!-- <div class='field large-6 columns'> -->
+                <!-- <label>Select Square type</label> -->
+                 <%#= f.select :charitytype, ["Lottery","Raffles","Bets","Appeals","Auctions", "Bid"] %>
+                <!-- </div> -->
+
+                <div class="hide">
+                  <%=f.number_field :user_id , :value=>current_user.id %>
+                </div>
+
+                <% if !@list.nil? %>
+                  <div class='field large-6 columns'>
+                    <%= f.label "Select a charity" %>
+                    <%= f.select :charityusersquare_id , @list %>
+                  </div>
+                <% end %>  
+
+                <!--<div class="field large-6 columns">
+                  <%#= f.label "Name" %>
+                  <%#= f.text_field :name %>
+                </div> -->
+
+                <div class="field large-12 columns form-group"> 
+                  <%= f.label "Description" %>
+                  <%= f.text_area :description,:placeholder => "Enter bet description" %>
+                </div>
+
+                <div class="field large-6 columns">
+                  <%= f.label "Ending date" %>
+                  <%= f.text_field :enddate ,{:class => 'datetimepicker', :placeholder => 'Bet end date ',:required => true            } %>
+                </div>
+                
+                <%= f.hidden_field :charitytype, :value => params[:square]%>
+
+                <div class='field large-6 columns'>
+                  <%= f.label "I bet" %> 
+                  <%= f.number_field :amount ,:placeholder=>'Enter amount in $', :min=> 1  %>
+                </div>
+
+                <div class='field large-6 columns'>
+                  <label>that</label> 
+                  <%= f.text_field :subject, :placeholder =>'Please enter the bet subject' ,:required => true %>
+                </div>
+
+                <div class='field large-6 columns'>
+                  <label>will</label>  
+                  <%= f.text_field :objective, :placeholder =>'Please enter the bet objective', :required => true %>
+                </div>
+
+	              <div class="create_squar_upload_image left">
+	              	<div class="large-3 medium-4 small-12 columns">
+	              	   <div id="holder"></div> 
+	              	   <label> Add Photos </label>
+	              	   	<div class="upload_image_squar text-center">
+	              	   		<p>Click here or <br> drag &amp; drop</p>
+	              	   		<input id="file" name="bet[logo]" type="file" required>
+	              	   	</div>
+	              	</div>
+	              	<div class="large-9 medium-8 small-12 columns">
+	              		<label>Delete or rearrange your images</label>
+	              		<div class="upload-preview"></div>
+	              	</div>    
+	              </div>   
+
+                <div class="invite large-12 left">         
+                  <%#= form_tag invite_path, method: :post do %>
+                  	<div class="small-12 columns">
+                    		<%= label_tag 'recipients', 'Invite users to bet' %>
+                    	</div> 
+                    	<div class="large-6 medium-6 small-12 columns"> 
+	                    <p><%= select_tag 'recipients', recipients_options, multiple: true, :required => true, class: 'form-control chosen-it', data: { placeholder: "Select Registered Users" } %></p>
+	                    <div class='invite_btn left' >Invite more users</div>
+	                </div> 
+	                  <div class="large-6 medium-6 small-12 columns"> 
+	                    <div class='invite_sub' style='display:none'>
+	                      <p><%= text_field_tag 'custom_recipients', nil, :placeholder => 'Add email and press enter', :class => "tm-input"  %></p>
+	                      <p><%= hidden_field_tag 'url', request.original_url %></p>
+	                      <p><%= hidden_field_tag 'bet_id', params[:id].to_i %></p>
+	                    </div>
+	                  </div> 
+                    <p><%#= submit_tag 'Send', class: 'tiny button' %></p>
+                  <%# end %> 
+                  <div class="msg large-12 columns">
+                  </div>                
+                </div> 
+
+                <div class="field bottom_ceate_bet_btn large-12 columns">
+                  <%= f.submit "Create Bet " , :class=>'button success' %>
+                </div>
+
+              <% end %>
+            </div>
+
+
+
+            

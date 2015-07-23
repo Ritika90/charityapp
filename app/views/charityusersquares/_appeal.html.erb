@@ -1,0 +1,128 @@
+            <div class='appeal'>
+             <% @appeal= Appeal.new %>
+              <%= form_for(@appeal, :url =>  appeals_create_path, :html => { :multipart => true ,:novalidate=>"novalidate"} )  do |f| %>
+                <div class="images_url row">
+                </div> 
+
+                <div id="errorExplanation">
+                  <%= flash["error"] %>
+                </div>
+
+                <!-- <div class='field large-6 columns'> -->
+                <!-- <label>Select Square type</label> -->
+                 <%#= f.select :charitytype, ["Lottery","Raffles","Bets","Appeals","Auctions", "Bid"] %>
+                <!-- </div> -->
+
+                <div class="hide">
+                  <%=f.number_field :user_id , :value=>current_user.id %>
+                </div>
+
+                <% if !@list.nil? %>
+                  <div class='field large-6 columns'>
+                    <%= f.label "Select a charity" %>
+                    <%= f.select :charityusersquare_id , @list %>
+                  </div>
+                <% end %>  
+
+                <!--<div class="field large-6 columns">
+                  <%#= f.label "Name" %>
+                  <%#= f.text_field :name %>
+                </div> -->
+                <%= f.hidden_field :charitytype, :value => params[:square]%>
+
+                <div class="field large-12 columns form-group"> 
+                  <%= f.label "Description" %>
+                  <%= f.text_area :description,:placeholder => "Enter description" %>
+                </div>
+
+                <div class='field large-6 columns'>
+                  <%= f.label "Type" %> 
+                  <%#binding.pry%>
+                  <%= f.select :appeal_type, options_for_select(["Select Square", "General", "Specific"], :selected => params[:appeal_type]) %>
+                  <%#= f.select(:appeal_type, ["General", "Specific"], {:prompt => "appeal_type"}, :onchange => "location.href = '#{request.url}'")%>
+                </div>
+
+                <div class="field large-6 columns">
+                  <%= f.label "Ending date" %>
+                  <%= f.text_field :enddate ,{:class => 'datetimepicker', :placeholder => 'Appeal end date ',:required => true            } %>
+                </div>
+
+                <div class='field large-6 columns specific'>
+                  <%= f.label :specific_appeal_description, "Appeal Description" %>
+                  <%= f.text_field :specific_appeal_description %>
+                </div>
+
+                <div class="create_squar_upload_image left">
+                  <div class="large-3 medium-4 small-12 columns">
+                     <div id="holder"></div> 
+                     <label> Add Photos </label>
+                      <div class="upload_image_squar text-center">
+                        <p>Click here or <br> drag &amp; drop</p>
+                        <input id="file" name="appeal[logo]" type="file" required>
+                      </div>
+                  </div>
+                  <div class="large-9 medium-8 small-12 columns">
+                    <label>Delete or rearrange your images</label>
+                    <div class="upload-preview"></div>
+                  </div>    
+                </div>   
+
+                <div class="field bottom_ceate_bet_btn large-12 columns">
+                  <%= f.submit "Create Appeal " , :class=>'button success left' %>
+                </div>
+
+              <% end %>
+            </div>
+
+
+
+            <script>
+$(document).ready(function(){
+  // alert("on load");
+$('.th').click(function(){
+ var id= $(this).attr('id');
+ $('.'+id).fadeIn(); 
+})
+
+$('.datetimepicker').datetimepicker();
+
+
+/* validations for the form  */
+$('.button.success').click(function(e){
+  
+   
+        //e.preventDefault();
+
+            //form validation rules
+            $("#new_appeal").validate({
+                rules: {
+                    'appeal[description]': "required"
+                },
+                messages: {
+                    'appeal[description]': "Please enter description *"
+                },
+                submitHandler: function(form) {
+                    console.log('submit');
+                    form.submit();
+                }
+            });
+
+
+})
+
+  $('#appeal_appeal_type').change(function() {
+      location.reload();
+  });  
+  if ($("#appeal_appeal_type :selected").text() == "Specific")
+  {
+    $(".specific").show();
+
+  }
+  else {
+    $(".specific").hide();
+  }
+ 
+  });
+/* end */
+
+</script>
